@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Message Board</title>
+  <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <style>
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 50px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: black;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="my-4">Messages</h1>
+    <ul class="list-group mb-4">
+      <% messages.forEach(message => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong><%= message.title %></strong>: <%= message.content %>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteMessage('<%= message.id %>')">Delete</button>
+        </li>
+      <% }); %>
+    </ul>
+    <h2 class="my-4">Add a New Message</h2>
+    <form action="/messages" method="POST">
+      <div class="form-group">
+        <input type="text" name="title" class="form-control" placeholder="Title" required />
+      </div>
+      <div class="form-group">
+        <textarea name="content" class="form-control" placeholder="Content" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Message</button>
+    </form>
+  </div>
+
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+  ></script>
+  <script>
+    function deleteMessage(id) {
+      fetch(`/messages/${id}`, {
+        method: 'DELETE'
+      }).then(response => {
+        if (response.ok) {
+          location.reload();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
